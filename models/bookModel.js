@@ -30,11 +30,11 @@ const bookSchema = mongoose.Schema({
             }
         }
     ],
-    category: {
+    genre: {
         type: String,
-        required: [true, "Please select the book's category"]
+        required: [true, "Please select the book's genre"]
     },
-    Stock: {
+    stock: {
         type: Number,
         required: [true, 'Please enter the amount of stock'],
         default: 1
