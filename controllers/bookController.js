@@ -12,12 +12,29 @@ exports.createBook = async (req, res, next) => {
     })
 }
 
-// get all books
+// Get all books
 exports.getAllBooks = async (req, res) => {
     const books = await Book.find()
     res.status(200).json({
         success: true,
         books
+    })
+}
+
+// Get Book Details
+exports.getBookDetails = async(req, res, next) => {
+    const book = await Book.findById(req.params.id)
+
+    if(!book) {
+        return res.status(500).json({
+            success: 'false',
+            message: "Book not found"
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        book
     })
 }
 
