@@ -44,3 +44,23 @@ exports.updateBook = async (req, res, next) => {
         book 
     })
 }
+
+
+// Delete Product -Admin
+
+exports.deleteBook = async (req, res, next) => {
+    const book = await Book.findById(req.params.id)
+
+    if(!book) {
+        return res.status(500).json({
+            success:false,
+            message: "Book not found"
+        })
+    }
+    await book.remove()
+
+    res.status(200).json({
+        success: true,
+        message: "Book deleted successfully"
+    })
+}
