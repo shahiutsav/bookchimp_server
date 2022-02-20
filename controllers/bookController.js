@@ -1,6 +1,7 @@
 const Book = require('../models/bookModel')
 const ErrorHandler = require('../utils/errorhandler')
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
+const ApiFeatures = require('../utils/apifeatures')
 
 // Create Book -- Admin
 exports.createBook = catchAsyncErrors(
@@ -17,7 +18,8 @@ exports.createBook = catchAsyncErrors(
 // Get all books
 exports.getAllBooks = catchAsyncErrors(
     async (req, res) => {
-        const books = await Book.find()
+        const apiFeature = new ApiFeatures(Book.find(), req.query).search().filter()
+        const books = await apiFeature.query
         res.status(200).json({
             success: true,
             books
