@@ -5,6 +5,9 @@ const ApiFeatures = require("../utils/apifeatures");
 
 // Create Book -- Admin
 exports.createBook = catchAsyncErrors(async (req, res, next) => {
+  
+  req.body.user = req.user.id;
+
   const book = await Book.create(req.body);
 
   res.status(201).json({
