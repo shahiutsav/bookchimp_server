@@ -5,7 +5,6 @@ const ApiFeatures = require("../utils/apifeatures");
 
 // Create Book -- Admin
 exports.createBook = catchAsyncErrors(async (req, res, next) => {
-  
   req.body.user = req.user.id;
 
   const book = await Book.create(req.body);
@@ -46,7 +45,7 @@ exports.getBookDetails = catchAsyncErrors(async (req, res, next) => {
     book,
   });
 });
-// Update Product -- Admin
+// Update Book -- Admin
 
 exports.updateBook = catchAsyncErrors(async (req, res, next) => {
   let book = await Book.findById(req.params.id);
@@ -67,7 +66,7 @@ exports.updateBook = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Delete Product -Admin
+// Delete Book -Admin
 
 exports.deleteBook = catchAsyncErrors(async (req, res, next) => {
   const book = await Book.findById(req.params.id);
@@ -80,5 +79,45 @@ exports.deleteBook = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Book deleted successfully",
+  });
+});
+
+// Create new review or update it
+exports.createBookReview = catchAsyncErrors(async (req, res, next) => {
+  const { rating, comment, bookId } = req.body;
+  const review = {
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+
+  const book = await Book.findById(bookId);
+
+  const isReviewed = book.reviews.find(
+    (rev) => rev.user.toString() === req.user._id.toString()
+  );
+
+  if (isReviewed) {
+    book.reviews.forEach((rev) => {
+      if (rev.user.toString() === req.user._id.toString())
+        (rev.rating = rating), (rev.comment = comment);
+    });
+  } else {
+    book.reviews.push(review);
+    book.numOfReviews = book.reviews.length;
+  }
+
+  let avg = 0;
+  book.reviews.forEach((rev) => {
+    avg += rev.rating;
+  });
+
+  book.ratings = avg / book.reviews.length;
+
+  await book.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
   });
 });
