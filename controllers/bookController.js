@@ -137,7 +137,6 @@ exports.getBookReviews = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Delete review
-
 exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
   const book = await Book.findById(req.query.bookId);
 
