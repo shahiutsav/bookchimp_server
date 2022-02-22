@@ -40,6 +40,7 @@ const bookSchema = new mongoose.Schema({
     default: 1,
   },
   numOfReviews: {
+    type: Number,
     default: 0,
   },
   reviews: [
