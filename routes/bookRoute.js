@@ -24,7 +24,7 @@ router
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateBook)
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteBook);
 
-router.route("/books/:id").get(getBookDetails);
+router.route("/book/:id").get(getBookDetails);
 
 router.route("/review").put(isAuthenticatedUser, createBookReview);
 
